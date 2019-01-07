@@ -7,7 +7,14 @@ use App\User;
 
 class profilecontroller extends Controller
 {
-       public function show($nom)
+	public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('valide');
+    }
+
+
+    public function show($nom)
     {
         $user = User::whereNom($nom)->first();
         return view('profile')->withUser($user);

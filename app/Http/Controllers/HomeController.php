@@ -16,6 +16,8 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
+    protected $redirectTo = '/profile';
+
     /**
      * Show the application dashboard.
      *

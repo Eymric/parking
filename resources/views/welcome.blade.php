@@ -1,85 +1,41 @@
-<!doctype html>
-<html lang="{{ app()->getLocale() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends ('layouts.app')
 
-        <title>M2L - Parking</title>
-
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Parking M2L
-                </div>
-                 <div class="links">
-                    @auth
-                        <a href="{{ url('/membre') }}">Espace membre</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
-                    @endauth
-                </div>
-                </div>
+    @section ('content')
+    @php 
+        use App\Place;
+        use App\Reserver;
+        use App\User;
+    @endphp
+        @guest
+            <div class="title m-b-md">
+                <h1> Parking M2L </h1>
             </div>
-        </div>
-    </body>
-</html>
+        @else 
+            <div class="title m-b-md">
+                <h1>Parking M2L</h1> 
+            </div> <br/>
+            <h4> {{  auth()->user()->nom }} {{ auth()->user()->prenom }} </h4>
+           
+        {{--     $idUser = auth()->user()->id_user;
+                 Reserver::all()->whereidPlace()
+                 $place = Place::whereidPlace(Reserver::)
+                 (Reserver::idUser($idUser)->first()) --}}
+                
+            {{-- <h3>Vous avez la place de parking </h3> --}}
+        
+        @endguest
+        @auth
+            @if(auth()->user()->isValide())
+            <a href="{{ route ('reserver') }}"><button type="button" class="btn btn-primary btn-lg">Reserver</button></a>
+            @else 
+              <p> Votre compte n'est pas valide. L'administrateur doit valider votre inscription.</p>
+            @endif
+        @endauth
+
+                    @if (session('status'))
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                    @endif 
+                
+    @endsection

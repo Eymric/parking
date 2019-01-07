@@ -14,11 +14,14 @@ class CreateTableReserver extends Migration
     public function up()
     {
         Schema::create('reserver', function( Blueprint $table) {
-            $table->date('finPeriode');
-            $table->integer('pseudo')->foreign()->references('pseudo')->on('membres');
-            $table->integer('idPlace')->unsigned()->foreign()->references('idPlace')->on('place');
-            $table->date('debutPeriode')->foreign()->references('debutPeriode')->on('periode');
-            $table->primary(array('debutPeriode', 'pseudo', 'idPlace'));
+            $table->increments('idReservation');
+            $table->date('finPeriode')->nullable();
+            $table->integer('idUser')->unsigned();
+            $table->foreign('idUser')->references('id_user')->on('membres')->onDelete('cascade');
+            $table->integer('idPlace')->unsigned();
+            $table->foreign('idPlace')->references('idPlace')->on('place')->onDelete('cascade');
+            $table->date('debutPeriode');
+            $table->foreign('debutPeriode')->references('debutPeriode')->on('periode')->onDelete('cascade');
         });
     }
 
@@ -29,6 +32,6 @@ class CreateTableReserver extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('reserver');
     }
 }
